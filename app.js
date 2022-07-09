@@ -4,7 +4,10 @@ require('dotenv').config();
 
 const { 
   startMenu,
-  addEmployeePrompt
+  addEmployeePrompt,
+  addRolePrompt,
+  addDepartmentPrompt,
+  updateEmpRolePrompt
 } = require('./lib/prompter');
 
 const { 
@@ -15,9 +18,17 @@ const {
   updateEmployeesManager,
   addDepartment,
   addRole,
+  addEmployee
 } = require('./lib/queries');
 
+/*
 
+1. Move functions later into handler folder
+2. create validators later
+
+*/
+
+// VIEWING TABLES
 function handler(argue) {
   connection.query(argue, function (err, result, fields) {
     if (err) {
@@ -28,10 +39,12 @@ function handler(argue) {
   })
 }
 
-function addEmployee() {
+
+// ADDING TO TABLES
+function addedEmployee() {
   inquirer.prompt(addEmployeePrompt)
     .then(response => {
-      connection.query(`INSERT INTO employee SET ?`,
+      connection.query(addEmployee,
       {
         last_name: response.last_name,
         first_name: response.first_name,
@@ -45,15 +58,55 @@ function addEmployee() {
     })
 }
 
+function addedRole() {
+  inquirer.prompt(addRolePrompt)
+    .then(response => {
+      connection.query(addRole,
+      {
+        title: response.title,
+        salary: response.salary,
+        department_id: response.department,
+      },
+      function (err) {
+        if (err) throw err
+      })
+      start()
+    })
+}
 
+function addedDepartment() {
+  inquirer.prompt(addDepartmentPrompt)
+    .then(response => {
+      connection.query(addDepartment,
+      {
+        name: response.title
+      },
+      function (err) {
+        if (err) throw err
+      })
+      start()
+    })
+}
+
+//MODIFYING TABLES
+function updateEmpRole() {
+  inquirer.prompt(updateEmpRolePrompt)
+    .then(response => {
+      connection.query
+    })
+}
+
+
+
+/* --------------------------------------------------------------- */
 console.log(`
-============================================= 
+ =============================================
 |                                             |
 |                                             |
 |              Employee Tracker               |
 |                                             |
 |                                             |
-=============================================
+ =============================================
 `)
 
 const start = async () => {
@@ -74,15 +127,15 @@ const start = async () => {
           break;
 
         case 'Add Department':
-          handler(addDepartment)
+          addedDepartment()
           break;
 
         case 'Add Role':
-          handler(addRole)
+          addedRole()
           break;
 
         case 'Add Employee':
-          addEmployee()
+          addedEmployee()
           break;
 
         case 'Update employee\'s role':
