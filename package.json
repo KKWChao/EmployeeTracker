@@ -1,17 +1,36 @@
 {
   "name": "c10-employeetracker",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "seeds": "node db/schema.sql",
+    "start": "node app.js"
+  },
+  "respository": {
+    "type": "git",
+    "url": "https://github.com/KKWChao/EmployeeTracker.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "console.table": "^0.10.0",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "inquirer": "^9.0.0",
-    "mysql": "^2.18.1"
-  }
+    "inquirer": "^8.2.2",
+    "mysql2": "^2.3.3"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KKWChao/EmployeeTracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KKWChao/EmployeeTracker/issues"
+  },
+  "homepage": "https://github.com/KKWChao/EmployeeTracker#readme",
+  "description": ""
 }
