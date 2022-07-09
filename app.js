@@ -7,7 +7,8 @@ const {
   addEmployeePrompt,
   addRolePrompt,
   addDepartmentPrompt,
-  updateEmpRolePrompt
+  getIdandNewRole,
+  getIdandNewManager
 } = require('./lib/prompter');
 
 const { 
@@ -15,7 +16,7 @@ const {
   viewRoles,
   viewEmployees,
   updateEmployeeRole,
-  updateEmployeesManager,
+  updateEmployeeManager,
   addDepartment,
   addRole,
   addEmployee
@@ -89,14 +90,31 @@ function addedDepartment() {
 }
 
 //MODIFYING TABLES
-function updateEmpRole() {
-  inquirer.prompt(updateEmpRolePrompt)
+function updateRole() {
+  inquirer.prompt(getIdandNewRole)
     .then(response => {
-      connection.query
+
+      connection.query(updateEmployeeRole, 
+        [response.targetRole, response.employeeId], 
+        (err, res) => {
+        if (err) throw err
+      })
+      start()
     })
 }
 
+function updateManager() {
+  inquirer.prompt(getIdandNewManager)
+  .then(response => {
 
+    connection.query(updateEmployeeManager, 
+      [response.targetManager, response.employeeId], 
+      (err, res) => {
+      if (err) throw err
+    })
+    start()
+  })
+}
 
 /* --------------------------------------------------------------- */
 console.log(`
@@ -107,7 +125,12 @@ console.log(`
 |                                             |
 |                                             |
  =============================================
-`)
+
+
+
+
+
+ `)
 
 const start = async () => {
   await inquirer.prompt(startMenu)
@@ -139,24 +162,13 @@ const start = async () => {
           break;
 
         case 'Update employee\'s role':
-          handler(updateEmployeeRole)
+          updateRole()
           break;
 
         case 'Update employee\'s manager':
-          handler(updateEmployeesManager)
+          updateManager()
           break;
 
-        // case 'Remove a department':
-        //   removeADepartment();
-        //   break;
-
-        // case 'Remove a role':
-        //   removeARole();
-        //   break;
-
-        // case 'Remove an employee':
-        //   removeAnEmployee();
-        //   break;
 
         case 'Quit':
           connection.end();
